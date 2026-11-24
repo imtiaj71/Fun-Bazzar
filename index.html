@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Bazzar | প্রিমিয়াম ডাই-কাস্ট মডেল কার শপ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Hind Siliguri (Bengali) & Orbitron / Rajdhani (Automotive English) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        display: ['"Orbitron"', 'sans-serif'],
+                        tech: ['"Rajdhani"', 'sans-serif'],
+                    },
+                    colors: {
+                        carbon: {
+                            950: '#090a0f',
+                            900: '#11131a',
+                            800: '#191c26',
+                            700: '#242938',
+                        },
+                        racing: {
+                            red: '#ef233c',
+                            dark: '#d90429',
+                            gold: '#f59e0b',
+                            amber: '#fbbf24'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Carbon Fiber Pattern & Scrollbar */
+        body {
+            background-color: #090a0f;
+            color: #f3f4f6;
+            overflow-x: hidden;
+        }
+        .carbon-bg {
+            background-color: #11131a;
+            background-image: radial-gradient(#242938 1px, transparent 1px), radial-gradient(#191c26 1px, #11131a 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        .hero-glow {
+            background: radial-gradient(circle at 75% 40%, rgba(239, 35, 60, 0.22) 0%, rgba(245, 158, 11, 0.08) 35%, rgba(9, 10, 15, 0) 70%);
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #090a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #242938;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ef233c;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased selection:bg-racing-red selection:text-white">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- ==========================================
+         1. HEADER & NAVIGATION
+    =========================================== -->
+    <header class="sticky top-0 z-40 bg-carbon-950/90 backdrop-blur-md border-b border-carbon-700/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 sm:h-20">
+                <!-- Brand Logo -->
+                <a href="#home" class="flex items-center gap-3 group">
+                    <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-racing-red to-racing-dark flex items-center justify-center shadow-lg shadow-racing-red/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-car-side text-white text-lg sm:text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-display font-extrabold text-xl sm:text-2xl tracking-wider text-white">
+                            FUN <span class="text-racing-red">BAZZAR</span>
+                        </span>
+                        <p class="text-[11px] text-gray-400 -mt-1 tracking-wide">Die-Cast Collectors Hub</p>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden lg:flex items-center gap-7 text-base font-medium">
+                    <a href="#home" class="text-gray-300 hover:text-racing-red transition-colors">হোম</a>
+                    <a href="#collection" class="text-gray-300 hover:text-racing-red transition-colors">কালেকশন</a>
+                    <a href="#offers" class="text-gray-300 hover:text-racing-gold transition-colors flex items-center gap-1.5">
+                        <i class="fa-solid fa-crown text-racing-gold text-xs"></i> ডিসকাউন্ট অফার
+                    </a>
+                    <a href="#youtube-reviews" class="text-gray-300 hover:text-racing-red transition-colors">ইউটিউব রিভিউ</a>
+                    <a href="#customer-reviews" class="text-gray-300 hover:text-racing-red transition-colors">কাস্টমার রিভিউ</a>
+                </nav>
+
+                <!-- Right Actions: Cart & Mobile Menu -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openCart()" class="relative flex items-center gap-2 bg-carbon-800 hover:bg-carbon-700 border border-carbon-700 text-white px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl transition-all shadow-md group">
+                        <i class="fa-solid fa-cart-shopping text-racing-red group-hover:scale-110 transition-transform"></i>
+                        <span class="hidden sm:inline font-medium text-sm">অর্ডার কার্ট</span>
+                        <span id="cart-badge" class="bg-racing-red text-white font-tech font-bold text-xs px-2 py-0.5 rounded-full">0</span>
+                    </button>
+
+                    <!-- Mobile Menu Toggle -->
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="lg:hidden p-2.5 rounded-xl bg-carbon-800 border border-carbon-700 text-gray-300 hover:text-white">
+                        <i class="fa-solid fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-carbon-900 border-b border-carbon-700 px-4 pt-2 pb-5 space-y-2">
+            <a href="#home" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-gray-200 hover:bg-carbon-800 hover:text-racing-red font-medium">হোম</a>
+            <a href="#collection" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-gray-200 hover:bg-carbon-800 hover:text-racing-red font-medium">কালেকশন</a>
+            <a href="#offers" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-racing-gold hover:bg-carbon-800 font-medium">
+                <i class="fa-solid fa-crown mr-1.5"></i> ডিসকাউন্ট অফার
+            </a>
+            <a href="#youtube-reviews" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-gray-200 hover:bg-carbon-800 hover:text-racing-red font-medium">ইউটিউব রিভিউ</a>
+            <a href="#customer-reviews" onclick="toggleMobileMenu()" class="block px-3 py-2.5 rounded-xl text-gray-200 hover:bg-carbon-800 hover:text-racing-red font-medium">কাস্টমার রিভিউ</a>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         2. HERO SECTION
+    =========================================== -->
+    <section id="home" class="relative carbon-bg hero-glow border-b border-carbon-800 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 lg:py-24">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                <!-- Left Text Content -->
+                <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-racing-red/15 border border-racing-red/30 text-racing-red text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-racing-red animate-ping"></span>
+                        ১০০% অরিজিনাল মেটাল বডি ডাই-কাস্ট মডেল
+                    </div>
+
+                    <h1 class="text-3xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight">
+                        সেরা মানের <span class="text-transparent bg-clip-text bg-gradient-to-r from-racing-red via-orange-500 to-racing-gold">ডাই-কাস্ট কালেকশন</span> এখন আপনার হাতের মুঠোয়
+                    </h1>
+
+                    <p class="text-gray-300 text-base sm:text-lg max-w-2xl mx-auto lg:mx-0 leading-relaxed">
+                        <span class="font-display font-bold text-white">Fun Bazzar</span> নিয়ে এসেছে বিশ্বমানের 1:18, 1:24, 1:32 এবং 1:64 স্কেলের এক্সক্লুসিভ স্পোর্টস কার, সুপারকার ও ভিন্টেজ মডেল। ওপেনিং ডোর, সাউন্ড, লাইট এবং নিখুঁত ডিটেইলিংয়ের সাথে সাজান আপনার স্বপ্নের গ্যারেজ।
+                    </p>
+
+                    <!-- Scale Pills -->
+                    <div class="flex flex-wrap justify-center lg:justify-start gap-2.5 pt-1">
+                        <span class="px-3 py-1 rounded-lg bg-carbon-800 border border-carbon-700 font-tech font-bold text-sm text-gray-200">1:18 COLLECTOR</span>
+                        <span class="px-3 py-1 rounded-lg bg-carbon-800 border border-carbon-700 font-tech font-bold text-sm text-gray-200">1:24 METAL SERIES</span>
+                        <span class="px-3 py-1 rounded-lg bg-carbon-800 border border-carbon-700 font-tech font-bold text-sm text-gray-200">1:32 PULL-BACK</span>
+                        <span class="px-3 py-1 rounded-lg bg-carbon-800 border border-carbon-700 font-tech font-bold text-sm text-gray-200">1:64 POCKET</span>
+                    </div>
+
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
+                        <a href="#collection" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-gradient-to-r from-racing-red to-racing-dark hover:from-red-500 hover:to-racing-red text-white font-semibold text-base shadow-lg shadow-racing-red/30 transition-all flex items-center justify-center gap-2">
+                            <span>কালেকশন দেখুন</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#offers" class="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-carbon-800 hover:bg-carbon-700 border border-racing-gold/50 text-racing-gold font-semibold text-base transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-gift"></i>
+                            <span>রেগুলার কাস্টমার ডিসকাউন্ট</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust Metrics -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-carbon-800/80 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="font-display font-bold text-xl sm:text-2xl text-white">৫০০+</p>
+                            <p class="text-xs sm:text-sm text-gray-400">ইউনিক মডেল কার</p>
+                        </div>
+                        <div>
+                            <p class="font-display font-bold text-xl sm:text-2xl text-racing-gold">৪.৯★</p>
+                            <p class="text-xs sm:text-sm text-gray-400">কাস্টমার রেটিং</p>
+                        </div>
+                        <div>
+                            <p class="font-display font-bold text-xl sm:text-2xl text-racing-red">২০%</p>
+                            <p class="text-xs sm:text-sm text-gray-400">VIP মেম্বার ছাড়</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Showcase Visual -->
+                <div class="lg:col-span-5 relative">
+                    <div class="relative rounded-3xl overflow-hidden border border-carbon-700 bg-carbon-900 shadow-2xl shadow-racing-red/15 group">
+                        <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=900&q=80"
+                             onerror="this.src='https://placehold.co/800x600/191c26/ef233c?text=Fun+Bazzar+1:18+Supercar'"
+                             alt="Premium Die-Cast Supercar Model"
+                             class="w-full h-72 sm:h-96 object-cover group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-carbon-950 via-carbon-950/30 to-transparent"></div>
+
+                        <!-- Floating Spec Card -->
+                        <div class="absolute bottom-4 left-4 right-4 bg-carbon-900/90 backdrop-blur-md border border-carbon-700 rounded-2xl p-4 flex items-center justify-between">
+                            <div>
+                                <span class="text-xs font-tech uppercase tracking-wider text-racing-gold font-bold">Featured Edition • 1:18 Scale</span>
+                                <h3 class="font-display font-bold text-white text-base sm:text-lg">Bugatti Chiron Super Sport</h3>
+                                <p class="text-xs text-gray-400">Zinc Alloy Body • Opening Gullwing Doors</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block font-tech font-bold text-xl text-racing-red">৳ ৪,৮৫০</span>
+                                <button onclick="addToCart(1)" class="mt-1 text-xs bg-racing-red hover:bg-racing-dark text-white px-3 py-1.5 rounded-lg font-medium transition-colors">
+                                    + কার্টে নিন
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         3. REGULAR CUSTOMER DISCOUNT OFFER SECTION
+    =========================================== -->
+    <section id="offers" class="py-16 sm:py-20 bg-carbon-950 border-b border-carbon-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header -->
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="inline-block px-3.5 py-1 rounded-full bg-racing-gold/15 border border-racing-gold/30 text-racing-gold text-sm font-semibold mb-3">
+                    <i class="fa-solid fa-crown mr-1"></i> VIP লয়্যালটি প্রোগ্রাম
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-bold text-white">রেগুলার কাস্টমার <span class="text-racing-gold">স্পেশাল ডিসকাউন্ট অফার</span></h2>
+                <p class="text-gray-400 mt-2 text-sm sm:text-base">
+                    Fun Bazzar থেকে নিয়মিত গাড়ি কিনলেই পাচ্ছেন এক্সক্লুসিভ প্রোমো কোড এবং ফ্ল্যাট ডিসকাউন্ট সুবিধা। নিচের কোড কপি করুন অথবা ফোন নম্বর দিয়ে VIP স্ট্যাটাস যাচাই করুন!
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Promo Card 1 -->
+                <div class="bg-gradient-to-br from-carbon-800 to-carbon-900 border border-carbon-700 hover:border-racing-red/60 rounded-2xl p-6 flex flex-col justify-between transition-all shadow-lg">
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-lg bg-racing-red/20 text-racing-red font-tech font-bold text-sm">2ND+ ORDER OFFER</span>
+                            <span class="font-display font-extrabold text-2xl text-white">১৫% ছাড়</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">রেগুলার বায়ার বোনাস</h3>
+                        <p class="text-gray-400 text-sm mb-6">
+                            আপনার ২য় বা তার পরবর্তী যেকোনো অর্ডারে পাবেন সরাসরি ১৫% ইনস্ট্যান্ট ডিসকাউন্ট। সব স্কেলের ডাই-কাস্ট গাড়ির জন্য প্রযোজ্য।
+                        </p>
+                    </div>
+                    <div class="bg-carbon-950 border border-dashed border-racing-red/60 rounded-xl p-3 flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-gray-400 block">প্রোমো কোড:</span>
+                            <span class="font-display font-bold text-racing-red tracking-wider text-base">FUNVIP15</span>
+                        </div>
+                        <button onclick="copyPromoCode('FUNVIP15')" class="px-3.5 py-2 rounded-lg bg-racing-red hover:bg-racing-dark text-white text-xs font-semibold transition-colors flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> কপি করুন
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Promo Card 2 -->
+                <div class="bg-gradient-to-br from-carbon-800 to-carbon-900 border border-racing-gold/40 hover:border-racing-gold rounded-2xl p-6 flex flex-col justify-between transition-all shadow-lg relative overflow-hidden">
+                    <div class="absolute -right-8 -top-8 w-24 h-24 bg-racing-gold/10 rounded-full blur-xl"></div>
+                    <div>
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="px-3 py-1 rounded-lg bg-racing-gold/20 text-racing-gold font-tech font-bold text-sm">COLLECTOR TIER</span>
+                            <span class="font-display font-extrabold text-2xl text-racing-gold">২০% ছাড়</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">মেগা গ্যারেজ বান্ডেল</h3>
+                        <p class="text-gray-400 text-sm mb-6">
+                            ৩,০০০ টাকা বা তার বেশি মূল্যের ডাই-কাস্ট কার অর্ডার করলেই পাচ্ছেন ফ্ল্যাট ২০% মেগা ডিসকাউন্ট!
+                        </p>
+                    </div>
+                    <div class="bg-carbon-950 border border-dashed border-racing-gold/60 rounded-xl p-3 flex items-center justify-between">
+                        <div>
+                            <span class="text-[11px] text-gray-400 block">প্রোমো কোড:</span>
+                            <span class="font-display font-bold text-racing-gold tracking-wider text-base">BAZZAR20</span>
+                        </div>
+                        <button onclick="copyPromoCode('BAZZAR20')" class="px-3.5 py-2 rounded-lg bg-racing-gold hover:bg-amber-500 text-carbon-950 text-xs font-bold transition-colors flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> কপি করুন
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Regular Customer Loyalty Verification Widget -->
+                <div class="bg-carbon-900 border border-carbon-700 rounded-2xl p-6 flex flex-col justify-between shadow-lg">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-3">
+                            <div class="w-9 h-9 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <h3 class="text-lg font-bold text-white">VIP মেম্বারশিপ ভেরিফাই</h3>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-4">
+                            আপনার মোবাইল নম্বর দিয়ে রেগুলার কাস্টমার অফার আনলক করুন। আনলক হলে কার্টে অটোমেটিক <span class="text-emerald-400 font-semibold">১৫% VIP ছাড়</span> যুক্ত হয়ে যাবে!
+                        </p>
+                    </div>
+
+                    <form onsubmit="verifyLoyaltyMember(event)" class="space-y-3">
+                        <div>
+                            <input type="tel" id="loyalty-phone" required placeholder="আপনার মোবাইল নম্বর (যেমন: 017XXXXXXXX)"
+                                   class="w-full px-4 py-3 rounded-xl bg-carbon-950 border border-carbon-700 focus:border-emerald-500 focus:outline-none text-white text-sm">
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-unlock-keyhole"></i> VIP ডিসকাউন্ট আনলক করুন
+                        </button>
+                        <div id="loyalty-status" class="hidden text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 rounded-lg p-2.5 text-center"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         4. DIE-CAST CAR PRODUCT CATALOG
+    =========================================== -->
+    <section id="collection" class="py-16 sm:py-20 carbon-bg border-b border-carbon-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Section Header & Filter Tabs -->
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+                <div>
+                    <span class="text-racing-red font-tech font-bold uppercase tracking-wider text-sm">Authentic Die-Cast Garage</span>
+                    <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">আমাদের এক্সক্লুসিভ <span class="text-racing-red">কার কালেকশন</span></h2>
+                </div>
+
+                <!-- Category Filter Buttons -->
+                <div id="filter-buttons" class="flex flex-wrap gap-2">
+                    <button onclick="filterProducts('all', this)" class="filter-btn active px-4 py-2 rounded-xl text-sm font-semibold bg-racing-red text-white transition-all">সবগুলো (All)</button>
+                    <button onclick="filterProducts('1:18', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-carbon-800 text-gray-300 hover:bg-carbon-700 transition-all">1:18 Scale</button>
+                    <button onclick="filterProducts('1:24', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-carbon-800 text-gray-300 hover:bg-carbon-700 transition-all">1:24 Scale</button>
+                    <button onclick="filterProducts('1:32', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-carbon-800 text-gray-300 hover:bg-carbon-700 transition-all">1:32 Scale</button>
+                    <button onclick="filterProducts('Supercar', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-carbon-800 text-gray-300 hover:bg-carbon-700 transition-all">Supercars</button>
+                    <button onclick="filterProducts('Vintage', this)" class="filter-btn px-4 py-2 rounded-xl text-sm font-semibold bg-carbon-800 text-gray-300 hover:bg-carbon-700 transition-all">Vintage</button>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Products dynamically injected via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         5. YOUTUBE VIDEO REVIEWS SECTION
+    =========================================== -->
+    <section id="youtube-reviews" class="py-16 sm:py-20 bg-carbon-950 border-b border-carbon-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-racing-red font-semibold text-sm mb-2">
+                        <i class="fa-brands fa-youtube text-lg"></i> Fun Bazzar Official Channel
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-bold text-white">ইউটিউব আনবক্সিং ও <span class="text-racing-red">ভিডিও রিভিউ</span></h2>
+                    <p class="text-gray-400 mt-1 text-sm sm:text-base">অর্ডার করার আগেই দেখে নিন গাড়িগুলোর রিয়েল-লাইফ ডিটেইলিং, ওপেনিং ডোর এবং সাউন্ড ও লাইট টেস্ট।</p>
+                </div>
+                <a href="https://www.youtube.com" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-red-600/15 hover:bg-red-600 border border-red-600/40 text-red-400 hover:text-white text-sm font-semibold transition-all self-start sm:self-auto">
+                    <i class="fa-brands fa-youtube"></i> চ্যানেল সাবস্ক্রাইব করুন
+                </a>
+            </div>
+
+            <!-- Video Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Video Card 1 -->
+                <div class="bg-carbon-900 border border-carbon-800 rounded-2xl overflow-hidden group hover:border-racing-red/50 transition-all">
+                    <div class="relative aspect-video bg-carbon-800 overflow-hidden cursor-pointer" onclick="openVideoModal('Lamborghini Aventador SVJ 1:24 আনবক্সিং রিভিউ', 'https://www.youtube.com/embed/ScMzIvxBSi4?autoplay=1')">
+                        <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=800&q=80"
+                             onerror="this.src='https://placehold.co/800x450/191c26/ef233c?text=YouTube+Review+1'"
+                             alt="Lamborghini Die-cast Review"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/25 transition-colors">
+                            <div class="w-14 h-14 rounded-full bg-racing-red text-white flex items-center justify-center shadow-lg shadow-racing-red/50 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play text-xl ml-1"></i>
+                            </div>
+                        </div>
+                        <span class="absolute bottom-2.5 right-2.5 bg-black/80 text-white font-tech text-xs px-2 py-0.5 rounded">08:45</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-white text-lg group-hover:text-racing-red transition-colors">Lamborghini Aventador SVJ 1:24 মেটাল মডেল রিভিউ</h3>
+                        <p class="text-gray-400 text-sm mt-2">সিজার ডোর, ইঞ্জিন সাউন্ড, হেডলাইট এবং হেভি জিঙ্ক অ্যালয় বডির বিস্তারিত রিভিউ বাংলায়।</p>
+                    </div>
+                </div>
+
+                <!-- Video Card 2 -->
+                <div class="bg-carbon-900 border border-carbon-800 rounded-2xl overflow-hidden group hover:border-racing-red/50 transition-all">
+                    <div class="relative aspect-video bg-carbon-800 overflow-hidden cursor-pointer" onclick="openVideoModal('Nissan GT-R R35 vs Toyota Supra 1:32 তুলনা', 'https://www.youtube.com/embed/aqz-KE-bpKQ?autoplay=1')">
+                        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=800&q=80"
+                             onerror="this.src='https://placehold.co/800x450/191c26/ef233c?text=YouTube+Review+2'"
+                             alt="JDM Die-cast Review"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/25 transition-colors">
+                            <div class="w-14 h-14 rounded-full bg-racing-red text-white flex items-center justify-center shadow-lg shadow-racing-red/50 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play text-xl ml-1"></i>
+                            </div>
+                        </div>
+                        <span class="absolute bottom-2.5 right-2.5 bg-black/80 text-white font-tech text-xs px-2 py-0.5 rounded">11:20</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-white text-lg group-hover:text-racing-red transition-colors">JDM লিজেন্ড: Nissan GT-R R35 এবং Supra 1:32</h3>
+                        <p class="text-gray-400 text-sm mt-2">বাজেটের মধ্যে সেরা দুটি JDM ডাই-কাস্ট মডেলের বিল্ড কোয়ালিটি এবং পুল-ব্যাক স্পিড টেস্ট।</p>
+                    </div>
+                </div>
+
+                <!-- Video Card 3 -->
+                <div class="bg-carbon-900 border border-carbon-800 rounded-2xl overflow-hidden group hover:border-racing-red/50 transition-all">
+                    <div class="relative aspect-video bg-carbon-800 overflow-hidden cursor-pointer" onclick="openVideoModal('১৯৬৭ Ford Mustang GT ভিন্টেজ কালেক্টর এডিশন', 'https://www.youtube.com/embed/LXb3EKWsInQ?autoplay=1')">
+                        <img src="https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?auto=format&fit=crop&w=800&q=80"
+                             onerror="this.src='https://placehold.co/800x450/191c26/ef233c?text=YouTube+Review+3'"
+                             alt="Vintage Mustang Review"
+                             class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                        <div class="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/25 transition-colors">
+                            <div class="w-14 h-14 rounded-full bg-racing-red text-white flex items-center justify-center shadow-lg shadow-racing-red/50 group-hover:scale-110 transition-transform">
+                                <i class="fa-solid fa-play text-xl ml-1"></i>
+                            </div>
+                        </div>
+                        <span class="absolute bottom-2.5 right-2.5 bg-black/80 text-white font-tech text-xs px-2 py-0.5 rounded">06:50</span>
+                    </div>
+                    <div class="p-5">
+                        <h3 class="font-bold text-white text-lg group-hover:text-racing-red transition-colors">1967 Ford Mustang GT ক্লাসিক কালেক্টর এডিশন</h3>
+                        <p class="text-gray-400 text-sm mt-2">ভিন্টেজ কার প্রেমীদের জন্য ১:১৮ স্কেলের ক্লাসিক মাস্ট্যাংয়ের ইন্টেরিয়র ও ক্রোম ফিনিশিং রিভিউ।</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         6. CUSTOMER REVIEWS SECTION
+    =========================================== -->
+    <section id="customer-reviews" class="py-16 sm:py-20 carbon-bg border-b border-carbon-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <span class="text-racing-gold font-semibold text-sm">হ্যাপি কালেক্টরদের মতামত</span>
+                <h2 class="text-2xl sm:text-4xl font-bold text-white mt-1">কাস্টমার <span class="text-racing-red">রিভিউ ও রেটিং</span></h2>
+                <p class="text-gray-400 mt-2 text-sm sm:text-base">আমাদের ভেরিফায়েড কাস্টমারদের অভিজ্ঞতা পড়ুন অথবা আপনার কেনা ডাই-কাস্ট গাড়িটি নিয়ে রিভিউ লিখুন।</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Existing Reviews List (7 cols) -->
+                <div id="reviews-list" class="lg:col-span-7 space-y-4">
+                    <!-- Reviews dynamically rendered via JS -->
+                </div>
+
+                <!-- Write a Review Form (5 cols) -->
+                <div class="lg:col-span-5 bg-carbon-900 border border-carbon-700 rounded-2xl p-6 sm:p-7 shadow-xl sticky top-24">
+                    <h3 class="text-xl font-bold text-white mb-1 flex items-center gap-2">
+                        <i class="fa-solid fa-pen-to-square text-racing-red"></i> আপনার রিভিউ লিখুন
+                    </h3>
+                    <p class="text-gray-400 text-xs sm:text-sm mb-5">Fun Bazzar থেকে গাড়ি কিনে থাকলে আপনার মূল্যবান মতামত শেয়ার করুন।</p>
+
+                    <form onsubmit="submitCustomerReview(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">আপনার নাম *</label>
+                            <input type="text" id="rev-name" required placeholder="যেমন: তানভীর আহমেদ"
+                                   class="w-full px-4 py-2.5 rounded-xl bg-carbon-950 border border-carbon-700 focus:border-racing-red focus:outline-none text-white text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">কেনা গাড়ির মডেল *</label>
+                            <select id="rev-model" class="w-full px-4 py-2.5 rounded-xl bg-carbon-950 border border-carbon-700 focus:border-racing-red focus:outline-none text-white text-sm">
+                                <option value="Bugatti Chiron Super Sport (1:18)">Bugatti Chiron Super Sport (1:18)</option>
+                                <option value="Lamborghini Aventador SVJ (1:24)">Lamborghini Aventador SVJ (1:24)</option>
+                                <option value="Nissan GT-R R35 Nismo (1:24)">Nissan GT-R R35 Nismo (1:24)</option>
+                                <option value="1967 Ford Mustang GT (1:18)">1967 Ford Mustang GT (1:18)</option>
+                                <option value="Porsche 911 GT3 RS (1:32)">Porsche 911 GT3 RS (1:32)</option>
+                                <option value="Toyota Supra MK4 (1:32)">Toyota Supra MK4 (1:32)</option>
+                                <option value="Mercedes-AMG G63 (1:24)">Mercedes-AMG G63 (1:24)</option>
+                                <option value="Classic Volkswagen Beetle (1:32)">Classic Volkswagen Beetle (1:32)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">রেটিং দিন *</label>
+                            <div id="star-selector" class="flex items-center gap-2 text-2xl text-racing-gold cursor-pointer">
+                                <i class="fa-solid fa-star" data-val="1" onclick="setRating(1)"></i>
+                                <i class="fa-solid fa-star" data-val="2" onclick="setRating(2)"></i>
+                                <i class="fa-solid fa-star" data-val="3" onclick="setRating(3)"></i>
+                                <i class="fa-solid fa-star" data-val="4" onclick="setRating(4)"></i>
+                                <i class="fa-solid fa-star" data-val="5" onclick="setRating(5)"></i>
+                                <span id="rating-text" class="text-xs text-gray-400 ml-2">(৫/৫ অসাধারণ)</span>
+                            </div>
+                            <input type="hidden" id="rev-rating" value="5">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-1">আপনার মতামত *</label>
+                            <textarea id="rev-comment" rows="3" required placeholder="গাড়ির মেটাল কোয়ালিটি, প্যাকেজিং এবং ডেলিভারি সম্পর্কে লিখুন..."
+                                      class="w-full px-4 py-2.5 rounded-xl bg-carbon-950 border border-carbon-700 focus:border-racing-red focus:outline-none text-white text-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-racing-red to-racing-dark hover:from-red-500 hover:to-racing-red text-white font-semibold text-sm shadow-lg shadow-racing-red/25 transition-all">
+                            রিভিউ সাবমিট করুন
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         8. FOOTER
+    =========================================== -->
+    <footer class="bg-carbon-950 text-gray-400 pt-14 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pb-10 border-b border-carbon-800">
+                <!-- Brand Info -->
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-racing-red flex items-center justify-center text-white">
+                            <i class="fa-solid fa-car-side"></i>
+                        </div>
+                        <span class="font-display font-extrabold text-xl text-white">FUN <span class="text-racing-red">BAZZAR</span></span>
+                    </div>
+                    <p class="text-sm leading-relaxed">
+                        বাংলাদেশের বিশ্বস্ত প্রিমিয়াম ডাই-কাস্ট মডেল কার শপ। কালেক্টর গ্রেড মেটাল কার, সুপারকার এবং ভিন্টেজ মডেল সারা দেশে হোম ডেলিভারি দেওয়া হয়।
+                    </p>
+                    <div class="flex items-center gap-3 pt-1">
+                        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook" class="w-10 h-10 rounded-xl bg-carbon-800 hover:bg-blue-600 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube" class="w-10 h-10 rounded-xl bg-carbon-800 hover:bg-red-600 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram" class="w-10 h-10 rounded-xl bg-carbon-800 hover:bg-pink-600 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-white font-bold text-base mb-4">কুইক লিংকস</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="#home" class="hover:text-racing-red transition-colors">হোম পেজ</a></li>
+                        <li><a href="#collection" class="hover:text-racing-red transition-colors">ডাই-কাস্ট কালেকশন</a></li>
+                        <li><a href="#offers" class="hover:text-racing-gold transition-colors">রেগুলার কাস্টমার অফার</a></li>
+                        <li><a href="#youtube-reviews" class="hover:text-racing-red transition-colors">ইউটিউব ভিডিও রিভিউ</a></li>
+                        <li><a href="#customer-reviews" class="hover:text-racing-red transition-colors">কাস্টমার রিভিউ</a></li>
+                    </ul>
+                </div>
+
+                <!-- Return & Delivery Policy -->
+                <div>
+                    <h4 class="text-white font-bold text-base mb-4">ডেলিভারি ও রিটার্ন পলিসি</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-truck-fast text-racing-red mt-1"></i>
+                            <span>ঢাকার ভিতরে ২৪-৪৮ ঘণ্টায় হোম ডেলিভারি (চার্জ ৳৭০)।</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-box-open text-racing-gold mt-1"></i>
+                            <span>সারা বাংলাদেশে ২-৪ দিনে কুরিয়ার ডেলিভারি (চার্জ ৳১৩০)।</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-rotate-left text-emerald-400 mt-1"></i>
+                            <span>ডেলিভারি ম্যানের সামনে চেক করে নেওয়ার সুবিধা। কোনো ড্যামেজ থাকলে ইনস্ট্যান্ট রিটার্ন।</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="text-white font-bold text-base mb-4">যোগাযোগ করুন</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-racing-red"></i>
+                            <span class="font-tech text-base text-white">+880 1711-000000</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-brands fa-whatsapp text-emerald-400 text-base"></i>
+                            <span class="font-tech text-base text-white">+880 1811-000000 (WhatsApp)</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-racing-gold"></i>
+                            <span>support@funbazzar.com.bd</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot text-racing-red mt-1"></i>
+                            <span>মিরপুর-১০, ঢাকা-১২১৬, বাংলাদেশ</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500 gap-3">
+                <p>&copy; ২০২৬ <span class="text-white font-semibold">Fun Bazzar</span>. সর্বস্বত্ব সংরক্ষিত।</p>
+                <p>Die-Cast Collectors Community Bangladesh</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         MODALS & DRAWERS
+    =========================================== -->
+
+    <!-- Quick View Product Modal -->
+    <div id="quick-view-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+        <div class="bg-carbon-900 border border-carbon-700 rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl relative animate-fade-in">
+            <button onclick="closeQuickView()" class="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-carbon-800 hover:bg-racing-red text-white flex items-center justify-center transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="quick-view-content" class="grid grid-cols-1 md:grid-cols-2">
+                <!-- Populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- YouTube Video Player Modal -->
+    <div id="video-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/85 backdrop-blur-sm p-4">
+        <div class="bg-carbon-900 border border-carbon-700 rounded-2xl max-w-3xl w-full overflow-hidden shadow-2xl">
+            <div class="flex items-center justify-between px-5 py-3.5 border-b border-carbon-800">
+                <h3 id="video-modal-title" class="font-bold text-white text-base sm:text-lg truncate pr-4">Video Review</h3>
+                <button onclick="closeVideoModal()" class="w-8 h-8 rounded-lg bg-carbon-800 hover:bg-racing-red text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="aspect-video w-full bg-black">
+                <iframe id="video-modal-iframe" class="w-full h-full" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. INTERACTIVE CART & CHECKOUT SLIDE-OVER DRAWER -->
+    <div id="cart-drawer" class="fixed inset-0 z-50 hidden">
+        <!-- Backdrop -->
+        <div onclick="closeCart()" class="absolute inset-0 bg-black/75 backdrop-blur-sm transition-opacity"></div>
+
+        <!-- Drawer Panel -->
+        <div class="absolute right-0 top-0 bottom-0 w-full max-w-md bg-carbon-900 border-l border-carbon-700 shadow-2xl flex flex-col">
+            <!-- Drawer Header -->
+            <div class="px-5 py-4 border-b border-carbon-800 flex items-center justify-between bg-carbon-950">
+                <div class="flex items-center gap-2.5">
+                    <i class="fa-solid fa-cart-shopping text-racing-red text-lg"></i>
+                    <h3 class="font-bold text-white text-lg">আপনার অর্ডার কার্ট</h3>
+                </div>
+                <button onclick="closeCart()" class="w-9 h-9 rounded-xl bg-carbon-800 hover:bg-racing-red text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- Scrollable Cart Body -->
+            <div class="flex-1 overflow-y-auto p-5 space-y-6">
+                <!-- Cart Items Container -->
+                <div id="cart-items-container" class="space-y-3">
+                    <!-- Cart items dynamically injected -->
+                </div>
+
+                <!-- Promo Code & Summary Box -->
+                <div id="cart-summary-section" class="hidden space-y-5">
+                    <!-- Promo Code Input -->
+                    <div class="bg-carbon-950 border border-carbon-800 rounded-2xl p-4">
+                        <label class="block text-xs font-semibold text-gray-300 mb-2">রেগুলার কাস্টমার প্রোমো কোড (FUNVIP15 / BAZZAR20)</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="cart-promo-input" placeholder="কোড লিখুন..." class="flex-1 px-3.5 py-2 rounded-xl bg-carbon-900 border border-carbon-700 focus:border-racing-gold focus:outline-none text-white font-display text-sm uppercase">
+                            <button onclick="applyPromoInCart()" class="px-4 py-2 rounded-xl bg-racing-gold hover:bg-amber-500 text-carbon-950 font-bold text-xs transition-colors">
+                                অ্যাপ্লাই
+                            </button>
+                        </div>
+                        <p id="promo-feedback" class="text-xs mt-2 hidden"></p>
+                    </div>
+
+                    <!-- Delivery Area Selector -->
+                    <div class="bg-carbon-950 border border-carbon-800 rounded-2xl p-4 space-y-2.5">
+                        <span class="block text-xs font-semibold text-gray-300">ডেলিভারি এরিয়া নির্বাচন করুন:</span>
+                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-carbon-900 border border-carbon-700 cursor-pointer">
+                            <div class="flex items-center gap-2.5">
+                                <input type="radio" name="delivery-area" value="70" checked onchange="updateCartUI()" class="accent-racing-red">
+                                <span class="text-sm text-gray-200">ঢাকার ভিতরে (Inside Dhaka)</span>
+                            </div>
+                            <span class="font-tech font-bold text-white">৳ ৭০</span>
+                        </label>
+                        <label class="flex items-center justify-between p-2.5 rounded-xl bg-carbon-900 border border-carbon-700 cursor-pointer">
+                            <div class="flex items-center gap-2.5">
+                                <input type="radio" name="delivery-area" value="130" onchange="updateCartUI()" class="accent-racing-red">
+                                <span class="text-sm text-gray-200">ঢাকার বাইরে (Outside Dhaka)</span>
+                            </div>
+                            <span class="font-tech font-bold text-white">৳ ১৩০</span>
+                        </label>
+                    </div>
+
+                    <!-- Price Breakdown -->
+                    <div class="bg-carbon-950 border border-carbon-800 rounded-2xl p-4 space-y-2 text-sm">
+                        <div class="flex justify-between text-gray-400">
+                            <span>সাবটোটাল:</span>
+                            <span id="cart-subtotal" class="font-tech font-bold text-white text-base">৳ ০</span>
+                        </div>
+                        <div id="discount-row" class="hidden flex justify-between text-emerald-400">
+                            <span id="discount-label">ডিসকাউন্ট:</span>
+                            <span id="cart-discount" class="font-tech font-bold text-base">- ৳ ০</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>ডেলিভারি চার্জ:</span>
+                            <span id="cart-shipping" class="font-tech font-bold text-white text-base">৳ ৭০</span>
+                        </div>
+                        <div class="border-t border-carbon-800 pt-2.5 flex justify-between items-center">
+                            <span class="font-bold text-white text-base">সর্বমোট বিল:</span>
+                            <span id="cart-total" class="font-display font-bold text-xl text-racing-red">৳ ০</span>
+                        </div>
+                    </div>
+
+                    <!-- Checkout Form -->
+                    <form id="checkout-form" onsubmit="placeOrder(event)" class="bg-carbon-950 border border-carbon-800 rounded-2xl p-4 space-y-3.5">
+                        <h4 class="font-bold text-white text-base flex items-center gap-2">
+                            <i class="fa-solid fa-truck text-racing-red"></i> ডেলিভারি তথ্য দিন
+                        </h4>
+                        <div>
+                            <input type="text" id="cust-name" required placeholder="আপনার পূর্ণ নাম *" class="w-full px-3.5 py-2.5 rounded-xl bg-carbon-900 border border-carbon-700 focus:border-racing-red focus:outline-none text-white text-sm">
+                        </div>
+                        <div>
+                            <input type="tel" id="cust-phone" required placeholder="মোবাইল নম্বর (01XXXXXXXXX) *" class="w-full px-3.5 py-2.5 rounded-xl bg-carbon-900 border border-carbon-700 focus:border-racing-red focus:outline-none text-white text-sm">
+                        </div>
+                        <div>
+                            <textarea id="cust-address" rows="2" required placeholder="সম্পূর্ণ ঠিকানা (বাসা নং, রোড, এলাকা, জেলা) *" class="w-full px-3.5 py-2.5 rounded-xl bg-carbon-900 border border-carbon-700 focus:border-racing-red focus:outline-none text-white text-sm"></textarea>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div>
+                            <span class="block text-xs font-semibold text-gray-300 mb-2">পেমেন্ট মেথড:</span>
+                            <div class="grid grid-cols-3 gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment-method" value="Cash on Delivery" checked class="peer sr-only">
+                                    <div class="p-2 text-center rounded-xl bg-carbon-900 border border-carbon-700 peer-checked:border-racing-red peer-checked:bg-racing-red/10 text-xs font-semibold text-white">
+                                        ক্যাশ অন ডেলিভারি
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment-method" value="bKash" class="peer sr-only">
+                                    <div class="p-2 text-center rounded-xl bg-carbon-900 border border-carbon-700 peer-checked:border-pink-500 peer-checked:bg-pink-500/10 text-xs font-semibold text-pink-400">
+                                        bKash
+                                    </div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="radio" name="payment-method" value="Nagad" class="peer sr-only">
+                                    <div class="p-2 text-center rounded-xl bg-carbon-900 border border-carbon-700 peer-checked:border-orange-500 peer-checked:bg-orange-500/10 text-xs font-semibold text-orange-400">
+                                        Nagad
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-racing-red to-racing-dark hover:from-red-500 hover:to-racing-red text-white font-bold text-base shadow-lg shadow-racing-red/30 transition-all">
+                            অর্ডার কনফার্ম করুন
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Order Confirmation Box (Shown after checkout) -->
+                <div id="order-confirmation-box" class="hidden bg-emerald-950/40 border border-emerald-500/40 rounded-2xl p-6 text-center space-y-4">
+                    <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto text-3xl">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-white">অর্ডার সফলভাবে গৃহীত হয়েছে!</h4>
+                    <p id="order-summary-text" class="text-sm text-gray-300 leading-relaxed"></p>
+                    <button onclick="resetAfterOrder()" class="px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold transition-colors">
+                        আরও শপিং করুন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         JAVASCRIPT LOGIC
+    =========================================== -->
+    <script>
+        // 1. Product Catalog Data (Die-Cast Cars)
+        const products = [
+            {
+                id: 1,
+                name: "Bugatti Chiron Super Sport",
+                scale: "1:18",
+                category: "Supercar",
+                price: 4850,
+                oldPrice: 5400,
+                badge: "Collector's Choice",
+                material: "Heavy Die-Cast Zinc Alloy + ABS",
+                features: ["Opening Gullwing Doors, Hood & Trunk", "Working Steering & Suspension", "Detailed W16 Engine Replica"],
+                image: "https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 2,
+                name: "Lamborghini Aventador SVJ",
+                scale: "1:24",
+                category: "Supercar",
+                price: 2150,
+                oldPrice: 2450,
+                badge: "Best Seller",
+                material: "Die-Cast Metal Body + Rubber Tires",
+                features: ["Scissor Opening Doors", "Engine Sound & LED Headlights", "Pull-Back Action"],
+                image: "https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 3,
+                name: "Nissan GT-R R35 Nismo",
+                scale: "1:24",
+                category: "Supercar",
+                price: 1950,
+                oldPrice: 2200,
+                badge: "JDM Legend",
+                material: "Die-Cast Metal + Carbon Spoiler",
+                features: ["Doors, Hood & Trunk Openable", "Realistic Exhaust Sound & Lights", "High-Grip Rubber Tires"],
+                image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 4,
+                name: "1967 Ford Mustang GT Classic",
+                scale: "1:18",
+                category: "Vintage",
+                price: 4200,
+                oldPrice: 4600,
+                badge: "Vintage Edition",
+                material: "Premium Alloy Metal + Chrome Trim",
+                features: ["Authentic Vintage Interior", "Steerable Front Wheels", "Opening Doors & V8 Engine Bay"],
+                image: "https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 5,
+                name: "Porsche 911 GT3 RS",
+                scale: "1:32",
+                category: "Supercar",
+                price: 1150,
+                oldPrice: 1350,
+                badge: "Hot Arrival",
+                material: "Die-Cast Metal Body + ABS",
+                features: ["2 Opening Doors", "LED Head & Tail Lights", "Smooth Pull-Back Motor"],
+                image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 6,
+                name: "Toyota Supra MK4 Twin-Turbo",
+                scale: "1:32",
+                category: "Supercar",
+                price: 1090,
+                oldPrice: 1250,
+                badge: "Fan Favorite",
+                material: "Die-Cast Metal + Rubber Tires",
+                features: ["Opening Doors & Hood", "Turbo Sound Effect + Lights", "Detailed Roll-Cage Interior"],
+                image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 7,
+                name: "Mercedes-AMG G63 Brabus",
+                scale: "1:24",
+                category: "1:24",
+                price: 2350,
+                oldPrice: 2650,
+                badge: "Luxury SUV",
+                material: "Heavy Die-Cast Metal + 6x6/4x4 Suspension",
+                features: ["All 4 Doors, Hood & Rear Door Open", "Horn & Engine Sound + Lights", "Spare Tire Carrier"],
+                image: "https://images.unsplash.com/photo-1520031441872-265e4ff70366?auto=format&fit=crop&w=700&q=80"
+            },
+            {
+                id: 8,
+                name: "Classic 1963 Volkswagen Beetle",
+                scale: "1:32",
+                category: "Vintage",
+                price: 980,
+                oldPrice: 1150,
+                badge: "Retro Classic",
+                material: "Die-Cast Alloy + Chrome Bumpers",
+                features: ["Retro Pastel Finish", "Opening Doors", "Pull-Back Action"],
+                image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=700&q=80"
+            }
+        ];
+
+        // 2. Initial Customer Reviews Data
+        let reviews = [
+            {
+                name: "সাজিদুল ইসলাম",
+                model: "Lamborghini Aventador SVJ (1:24)",
+                rating: 5,
+                date: "১৮ নভেম্বর, ২০২৬",
+                comment: "গাড়িটার মেটাল ফিনিশিং অসাধারণ! দরজা খুললে হেডলাইট জ্বলে আর ইঞ্জিনের সাউন্ড একদম রিয়েল মনে হয়। Fun Bazzar-এর প্যাকেজিংও খুব সেফ ছিল।"
+            },
+            {
+                name: "রাফিউজ্জামান চৌধুরী",
+                model: "Bugatti Chiron Super Sport (1:18)",
+                rating: 5,
+                date: "১০ নভেম্বর, ২০২৬",
+                comment: "আমি Fun Bazzar-এর রেগুলার কাস্টমার। FUNVIP15 কোড ব্যবহার করে ১৫% ডিসকাউন্ট পেয়েছি। ১:১৮ স্কেলের এই বুগাটি মডেলটি আমার কালেকশনের সেরা পিস।"
+            },
+            {
+                name: "নুসরাত জাহান",
+                model: "1967 Ford Mustang GT (1:18)",
+                rating: 5,
+                date: "২ নভেম্বর, ২০২৬",
+                comment: "ভাইয়ের জন্মদিনে গিফট করার জন্য নিয়েছিলাম। সে তো দেখে মহাখুশি! ঢাকার ভিতরে পরদিনই ডেলিভারি পেয়েছি।"
+            }
+        ];
+
+        // Cart & Discount State
+        let cart = [];
+        let activePromo = null; // { code: 'FUNVIP15', percent: 15, minOrder: 0 }
+
+        // Format number to Bengali/English friendly BDT string
+        function formatBDT(amount) {
+            return '৳ ' + Math.round(amount).toLocaleString('en-US');
+        }
+
+        // Toast Notification Helper
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgClass = type === 'error'
+                ? 'bg-red-950/95 border-racing-red text-white'
+                : 'bg-carbon-800/95 border-emerald-500 text-white';
+            const icon = type === 'error'
+                ? '<i class="fa-solid fa-circle-exclamation text-racing-red"></i>'
+                : '<i class="fa-solid fa-circle-check text-emerald-400"></i>';
+
+            toast.className = `pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl text-sm font-medium transition-all duration-300 transform translate-y-2 opacity-0 ${bgClass}`;
+            toast.innerHTML = `${icon}<span>${message}</span>`;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // Render Products Grid
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('product-grid');
+            const filtered = filter === 'all'
+                ? products
+                : products.filter(p => p.scale === filter || p.category === filter);
+
+            grid.innerHTML = filtered.map(product => `
+                <div class="bg-carbon-900 border border-carbon-800 hover:border-racing-red/60 rounded-2xl overflow-hidden flex flex-col justify-between group transition-all duration-300 shadow-lg hover:shadow-racing-red/10">
+                    <div>
+                        <!-- Image Header -->
+                        <div class="relative h-52 bg-carbon-800 overflow-hidden">
+                            <img src="${product.image}"
+                                 onerror="this.src='https://placehold.co/600x400/191c26/ef233c?text=${encodeURIComponent(product.name)}'"
+                                 alt="${product.name}"
+                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <div class="absolute inset-0 bg-gradient-to-t from-carbon-900 via-transparent to-black/30"></div>
+
+                            <!-- Scale Badge -->
+                            <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-carbon-950/90 border border-carbon-700 font-tech font-bold text-xs text-racing-gold">
+                                ${product.scale} SCALE
+                            </span>
+
+                            <!-- Tag Badge -->
+                            <span class="absolute top-3 right-3 px-2.5 py-1 rounded-lg bg-racing-red text-white text-[11px] font-semibold">
+                                ${product.badge}
+                            </span>
+
+                            <!-- Quick View Button -->
+                            <button onclick="openQuickView(${product.id})" class="absolute bottom-3 right-3 px-3 py-1.5 rounded-lg bg-carbon-950/85 hover:bg-white text-white hover:text-carbon-950 text-xs font-semibold backdrop-blur-sm transition-colors flex items-center gap-1.5">
+                                <i class="fa-regular fa-eye"></i> বিস্তারিত
+                            </button>
+                        </div>
+
+                        <!-- Card Content -->
+                        <div class="p-4">
+                            <p class="text-xs text-gray-400 font-medium">${product.material}</p>
+                            <h3 class="font-display font-bold text-white text-base sm:text-lg mt-1 line-clamp-1 group-hover:text-racing-red transition-colors">
+                                ${product.name}
+                            </h3>
+                            <div class="mt-2.5 flex flex-wrap gap-1.5">
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-carbon-800 text-gray-300">Metal Body</span>
+                                <span class="text-[11px] px-2 py-0.5 rounded bg-carbon-800 text-gray-300">Opening Doors</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Price & Add to Cart Footer -->
+                    <div class="px-4 pb-4 pt-2 border-t border-carbon-800/80 flex items-center justify-between">
+                        <div>
+                            <span class="text-xs text-gray-500 line-through block font-tech">${formatBDT(product.oldPrice)}</span>
+                            <span class="font-tech font-bold text-xl text-white">${formatBDT(product.price)}</span>
+                        </div>
+                        <button onclick="addToCart(${product.id})" class="px-4 py-2.5 rounded-xl bg-racing-red hover:bg-racing-dark text-white text-xs sm:text-sm font-semibold transition-all shadow-md shadow-racing-red/20 flex items-center gap-1.5 active:scale-95">
+                            <i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter Products Handler
+        function filterProducts(category, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('bg-racing-red', 'text-white');
+                btn.classList.add('bg-carbon-800', 'text-gray-300');
+            });
+            btnElement.classList.remove('bg-carbon-800', 'text-gray-300');
+            btnElement.classList.add('bg-racing-red', 'text-white');
+            renderProducts(category);
+        }
+
+        // Quick View Modal Logic
+        function openQuickView(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const content = document.getElementById('quick-view-content');
+            content.innerHTML = `
+                <div class="h-64 md:h-full bg-carbon-800 relative">
+                    <img src="${product.image}"
+                         onerror="this.src='https://placehold.co/600x500/191c26/ef233c?text=${encodeURIComponent(product.name)}'"
+                         alt="${product.name}"
+                         class="w-full h-full object-cover">
+                    <span class="absolute top-4 left-4 px-3 py-1 rounded-lg bg-carbon-950/90 border border-carbon-700 font-tech font-bold text-xs text-racing-gold">
+                        ${product.scale} SCALE • ${product.category}
+                    </span>
+                </div>
+                <div class="p-6 sm:p-7 flex flex-col justify-between space-y-5">
+                    <div>
+                        <span class="text-xs font-semibold text-racing-red uppercase tracking-wider">${product.badge}</span>
+                        <h3 class="font-display font-bold text-xl sm:text-2xl text-white mt-1">${product.name}</h3>
+                        <div class="flex items-baseline gap-3 mt-2">
+                            <span class="font-tech font-bold text-2xl text-racing-gold">${formatBDT(product.price)}</span>
+                            <span class="font-tech text-sm text-gray-500 line-through">${formatBDT(product.oldPrice)}</span>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-carbon-800 space-y-2.5 text-sm">
+                            <p class="text-gray-300"><strong class="text-white">মেটেরিয়াল:</strong> ${product.material}</p>
+                            <div>
+                                <strong class="text-white block mb-1.5">বিশেষ ফিচারসমূহ:</strong>
+                                <ul class="space-y-1.5 text-gray-300">
+                                    ${product.features.map(f => `<li class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400 text-xs"></i> ${f}</li>`).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="addToCart(${product.id}); closeQuickView();" class="w-full py-3 rounded-xl bg-racing-red hover:bg-racing-dark text-white font-semibold text-sm transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-cart-plus"></i> কার্টে যোগ করুন (${formatBDT(product.price)})
+                    </button>
+                </div>
+            `;
+
+            const modal = document.getElementById('quick-view-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQuickView() {
+            const modal = document.getElementById('quick-view-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // YouTube Video Modal Logic
+        function openVideoModal(title, embedUrl) {
+            document.getElementById('video-modal-title').textContent = title;
+            document.getElementById('video-modal-iframe').src = embedUrl;
+            const modal = document.getElementById('video-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeVideoModal() {
+            document.getElementById('video-modal-iframe').src = '';
+            const modal = document.getElementById('video-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Copy Promo Code Helper (using execCommand fallback for iframe safety)
+        function copyPromoCode(code) {
+            const tempInput = document.createElement('input');
+            tempInput.value = code;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            document.getElementById('cart-promo-input').value = code;
+            showToast(`প্রোমো কোড "${code}" কপি হয়েছে! কার্টে অ্যাপ্লাই করুন।`);
+        }
+
+        // Regular Customer Loyalty Phone Verification
+        function verifyLoyaltyMember(event) {
+            event.preventDefault();
+            const phoneInput = document.getElementById('loyalty-phone').value.trim();
+            const statusDiv = document.getElementById('loyalty-status');
+
+            if (phoneInput.length < 11) {
+                showToast('সঠিক ১১ ডিজিটের মোবাইল নম্বর দিন।', 'error');
+                return;
+            }
+
+            activePromo = { code: 'FUNVIP15', percent: 15, minOrder: 0 };
+            document.getElementById('cart-promo-input').value = 'FUNVIP15';
+            document.getElementById('cust-phone').value = phoneInput;
+
+            statusDiv.innerHTML = `<i class="fa-solid fa-crown mr-1"></i> অভিনন্দন! <strong>${phoneInput}</strong> নম্বরের জন্য ১৫% VIP ডিসকাউন্ট (FUNVIP15) কার্টে অ্যাক্টিভ হয়েছে।`;
+            statusDiv.classList.remove('hidden');
+            updateCartUI();
+            showToast('VIP মেম্বারশিপ ভেরিফায়েড! ১৫% ছাড় অ্যাক্টিভ হয়েছে।');
+        }
+
+        // Cart Management Functions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`"${product.name}" কার্টে যোগ করা হয়েছে!`);
+        }
+
+        function updateQuantity(productId, delta) {
+            const index = cart.findIndex(item => item.id === productId);
+            if (index === -1) return;
+
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function applyPromoInCart() {
+            const code = document.getElementById('cart-promo-input').value.trim().toUpperCase();
+            const feedback = document.getElementById('promo-feedback');
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            if (code === 'FUNVIP15') {
+                activePromo = { code: 'FUNVIP15', percent: 15, minOrder: 0 };
+                feedback.textContent = '✓ রেগুলার কাস্টমার ১৫% ডিসকাউন্ট অ্যাপ্লাই হয়েছে!';
+                feedback.className = 'text-xs mt-2 text-emerald-400 block';
+                showToast('FUNVIP15 (১৫% ছাড়) অ্যাপ্লাই হয়েছে!');
+            } else if (code === 'BAZZAR20') {
+                if (subtotal < 3000) {
+                    feedback.textContent = '⚠ BAZZAR20 কোডের জন্য ন্যূনতম ৳ ৩,০০০ টাকার অর্ডার প্রয়োজন।';
+                    feedback.className = 'text-xs mt-2 text-racing-gold block';
+                    showToast('ন্যূনতম ৩,০০০ টাকার অর্ডার প্রয়োজন!', 'error');
+                    return;
+                }
+                activePromo = { code: 'BAZZAR20', percent: 20, minOrder: 3000 };
+                feedback.textContent = '✓ মেগা গ্যারেজ ২০% ডিসকাউন্ট অ্যাপ্লাই হয়েছে!';
+                feedback.className = 'text-xs mt-2 text-emerald-400 block';
+                showToast('BAZZAR20 (২০% ছাড়) অ্যাপ্লাই হয়েছে!');
+            } else {
+                activePromo = null;
+                feedback.textContent = '✕ সঠিক প্রোমো কোড নয়। FUNVIP15 অথবা BAZZAR20 ব্যবহার করুন।';
+                feedback.className = 'text-xs mt-2 text-racing-red block';
+                showToast('সঠিক প্রোমো কোড নয়!', 'error');
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            document.getElementById('cart-badge').textContent = totalItems;
+
+            const container = document.getElementById('cart-items-container');
+            const summarySection = document.getElementById('cart-summary-section');
+            const confirmationBox = document.getElementById('order-confirmation-box');
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 space-y-3">
+                        <div class="w-16 h-16 rounded-full bg-carbon-800 text-gray-500 flex items-center justify-center mx-auto text-2xl">
+                            <i class="fa-solid fa-car"></i>
+                        </div>
+                        <p class="text-gray-400 font-medium">আপনার কার্টে এখনো কোনো গাড়ি নেই!</p>
+                        <button onclick="closeCart()" class="px-5 py-2 rounded-xl bg-racing-red text-white text-sm font-semibold">
+                            কালেকশন দেখুন
+                        </button>
+                    </div>
+                `;
+                summarySection.classList.add('hidden');
+                return;
+            }
+
+            confirmationBox.classList.add('hidden');
+            summarySection.classList.remove('hidden');
+
+            // Render Cart Items
+            container.innerHTML = cart.map(item => `
+                <div class="bg-carbon-950 border border-carbon-800 rounded-2xl p-3 flex items-center gap-3.5">
+                    <img src="${item.image}"
+                         onerror="this.src='https://placehold.co/100x100/191c26/ef233c?text=Car'"
+                         alt="${item.name}"
+                         class="w-16 h-16 rounded-xl object-cover bg-carbon-800 shrink-0">
+                    <div class="flex-1 min-w-0">
+                        <span class="text-[10px] font-tech text-racing-gold font-bold">${item.scale} SCALE</span>
+                        <h4 class="text-white font-bold text-sm truncate">${item.name}</h4>
+                        <span class="font-tech font-bold text-racing-red text-sm">${formatBDT(item.price * item.qty)}</span>
+                    </div>
+                    <div class="flex items-center gap-1.5 bg-carbon-900 border border-carbon-700 rounded-xl p-1">
+                        <button onclick="updateQuantity(${item.id}, -1)" class="w-6 h-6 rounded-lg hover:bg-carbon-700 text-gray-300 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-minus"></i>
+                        </button>
+                        <span class="font-tech font-bold text-white text-sm px-1.5">${item.qty}</span>
+                        <button onclick="updateQuantity(${item.id}, 1)" class="w-6 h-6 rounded-lg hover:bg-carbon-700 text-gray-300 flex items-center justify-center text-xs">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Calculate Totals
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let discountAmount = 0;
+
+            // Validate minimum order if BAZZAR20 was active
+            if (activePromo && activePromo.minOrder > 0 && subtotal < activePromo.minOrder) {
+                activePromo = null;
+                document.getElementById('promo-feedback').textContent = '⚠ ৩,০০০ টাকার নিচে হওয়ায় BAZZAR20 কোডটি রিমুভ হয়েছে।';
+                document.getElementById('promo-feedback').className = 'text-xs mt-2 text-racing-gold block';
+            }
+
+            const discountRow = document.getElementById('discount-row');
+            if (activePromo) {
+                discountAmount = (subtotal * activePromo.percent) / 100;
+                discountRow.classList.remove('hidden');
+                document.getElementById('discount-label').textContent = `ডিসকাউন্ট (${activePromo.code} - ${activePromo.percent}%):`;
+                document.getElementById('cart-discount').textContent = `- ${formatBDT(discountAmount)}`;
+            } else {
+                discountRow.classList.add('hidden');
+            }
+
+            const selectedShipping = document.querySelector('input[name="delivery-area"]:checked');
+            const shippingCost = selectedShipping ? parseInt(selectedShipping.value, 10) : 70;
+            const grandTotal = subtotal - discountAmount + shippingCost;
+
+            document.getElementById('cart-subtotal').textContent = formatBDT(subtotal);
+            document.getElementById('cart-shipping').textContent = formatBDT(shippingCost);
+            document.getElementById('cart-total').textContent = formatBDT(grandTotal);
+        }
+
+        function openCart() {
+            updateCartUI();
+            document.getElementById('cart-drawer').classList.remove('hidden');
+        }
+
+        function closeCart() {
+            document.getElementById('cart-drawer').classList.add('hidden');
+        }
+
+        // Place Order Handler
+        function placeOrder(event) {
+            event.preventDefault();
+            if (cart.length === 0) return;
+
+            const name = document.getElementById('cust-name').value.trim();
+            const phone = document.getElementById('cust-phone').value.trim();
+            const address = document.getElementById('cust-address').value.trim();
+            const payment = document.querySelector('input[name="payment-method"]:checked').value;
+            const totalText = document.getElementById('cart-total').textContent;
+            const orderId = 'FB-' + Math.floor(100000 + Math.random() * 900000);
+
+            document.getElementById('cart-items-container').innerHTML = '';
+            document.getElementById('cart-summary-section').classList.add('hidden');
+
+            const summaryText = document.getElementById('order-summary-text');
+            summaryText.innerHTML = `
+                ধন্যবাদ <strong class="text-white">${name}</strong>! আপনার অর্ডার আইডি <span class="font-tech font-bold text-racing-gold">${orderId}</span>।<br>
+                সর্বমোট বিল: <strong class="text-white">${totalText}</strong> (${payment})।<br>
+                শীঘ্রই <strong class="text-white">${phone}</strong> নম্বরে কল করে অর্ডারটি কনফার্ম করা হবে।
+            `;
+
+            document.getElementById('order-confirmation-box').classList.remove('hidden');
+            cart = [];
+            document.getElementById('cart-badge').textContent = '0';
+            showToast('আপনার অর্ডারটি সফলভাবে প্লেস হয়েছে!');
+        }
+
+        function resetAfterOrder() {
+            document.getElementById('order-confirmation-box').classList.add('hidden');
+            closeCart();
+        }
+
+        // Customer Reviews Rendering & Submission
+        function renderReviews() {
+            const list = document.getElementById('reviews-list');
+            list.innerHTML = reviews.map(rev => {
+                const stars = Array.from({ length: 5 }, (_, i) =>
+                    i < rev.rating
+                        ? '<i class="fa-solid fa-star text-racing-gold"></i>'
+                        : '<i class="fa-regular fa-star text-gray-600"></i>'
+                ).join('');
+
+                return `
+                    <div class="bg-carbon-900 border border-carbon-800 rounded-2xl p-5 sm:p-6 shadow-md">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-racing-red to-carbon-700 text-white font-bold flex items-center justify-center">
+                                    ${rev.name.charAt(0)}
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-white text-base flex items-center gap-2">
+                                        ${rev.name}
+                                        <span class="text-[11px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 font-medium">
+                                            <i class="fa-solid fa-circle-check text-[10px]"></i> ভেরিফায়েড বায়ার
+                                        </span>
+                                    </h4>
+                                    <p class="text-xs text-racing-gold font-tech font-semibold">${rev.model}</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-xs flex gap-0.5">${stars}</div>
+                                <span class="text-[11px] text-gray-500">${rev.date}</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">${rev.comment}</p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function setRating(val) {
+            document.getElementById('rev-rating').value = val;
+            const labels = {
+                1: '(১/৫ হতাশাজনক)',
+                2: '(২/৫ মোটামুটি)',
+                3: '(৩/৫ ভালো)',
+                4: '(৪/৫ খুব ভালো)',
+                5: '(৫/৫ অসাধারণ)'
+            };
+            document.getElementById('rating-text').textContent = labels[val];
+
+            document.querySelectorAll('#star-selector i').forEach(star => {
+                const starVal = parseInt(star.getAttribute('data-val'), 10);
+                if (starVal <= val) {
+                    star.classList.remove('fa-regular', 'text-gray-600');
+                    star.classList.add('fa-solid', 'text-racing-gold');
+                } else {
+                    star.classList.remove('fa-solid', 'text-racing-gold');
+                    star.classList.add('fa-regular', 'text-gray-600');
+                }
+            });
+        }
+
+        function submitCustomerReview(event) {
+            event.preventDefault();
+            const name = document.getElementById('rev-name').value.trim();
+            const model = document.getElementById('rev-model').value;
+            const rating = parseInt(document.getElementById('rev-rating').value, 10);
+            const comment = document.getElementById('rev-comment').value.trim();
+
+            if (!name || !comment) return;
+
+            reviews.unshift({
+                name,
+                model,
+                rating,
+                date: 'আজকে',
+                comment
+            });
+
+            renderReviews();
+            event.target.reset();
+            setRating(5);
+            showToast('ধন্যবাদ! আপনার রিভিউটি সফলভাবে যুক্ত হয়েছে।');
+        }
+
+        // Initialize Page
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProducts('all');
+            renderReviews();
+        });
+    </script>
+</body>
+</html>
